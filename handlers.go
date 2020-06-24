@@ -15,14 +15,14 @@ type Status struct {
 	Data   string `json:"data"`
 }
 
-// Home shows the home (login) screen
+// ReportStatus perfroms a check based on a verb, and returns JSON response
 func ReportStatus(app App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		remoteIP := getIP(r)
+		remoteIP := GetIP(r)
 		infoLog.Println("Request came from", remoteIP)
 
 		if _, ok := app.AllowFrom[remoteIP]; !ok {
-			denyAccess(w, "", "Access denied")
+			DenyAccess(w, "", "Access denied")
 			return
 		}
 
@@ -36,7 +36,7 @@ func ReportStatus(app App) http.HandlerFunc {
 			infoLog.Println("disk space")
 			ok, m, d, err := checkDiskSpace(diskToCheck)
 			if err != nil {
-				denyAccess(w, action, err.Error())
+				DenyAccess(w, action, err.Error())
 			}
 			okay = ok
 			msg = m
@@ -44,7 +44,7 @@ func ReportStatus(app App) http.HandlerFunc {
 		case "memory":
 			infoLog.Println("Memory")
 		default:
-			denyAccess(w, action, "Unknown request")
+			DenyAccess(w, action, "Unknown request")
 		}
 
 		status.Action = action
@@ -61,7 +61,7 @@ func ReportStatus(app App) http.HandlerFunc {
 
 // GetIP gets a requests IP address by reading off the forwarded-for
 // header (for proxies) and falls back to use the remote address.
-func getIP(r *http.Request) string {
+func GetIP(r *http.Request) string {
 	forwarded := r.Header.Get("X-FORWARDED-FOR")
 	if forwarded != "" {
 		ex := strings.Split(forwarded, ":")
@@ -71,7 +71,8 @@ func getIP(r *http.Request) string {
 	return ex[0]
 }
 
-func denyAccess(w http.ResponseWriter, action, msg string) {
+// DenyAccess generates a JSON error response
+func DenyAccess(w http.ResponseWriter, action, msg string) {
 	status := Status{
 		OK:     false,
 		Status: msg,
