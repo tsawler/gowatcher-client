@@ -5,13 +5,11 @@ import (
 	"net/http"
 )
 
-func routes() http.Handler {
+func routes(app App) http.Handler {
 
 	mux := chi.NewRouter()
 
-	mux.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("api"))
-	})
+	mux.Get("/{action}", ReportStatus(app))
 
 	return mux
 }
