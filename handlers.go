@@ -32,7 +32,9 @@ func ReportStatus(app App) http.HandlerFunc {
 		var msg, data string
 
 		switch action {
+
 		case "disk-space":
+			// checking disk space
 			ok, m, d, err := checkDiskSpace(diskToCheck)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
@@ -40,7 +42,9 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+
 		case "memory":
+			// checking memory
 			ok, m, d, err := checkMemory()
 			if err != nil {
 				DenyAccess(w, action, err.Error())
@@ -48,6 +52,12 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+
+		case "test":
+			// performing connectivity test
+			okay = true
+			msg = "Success"
+			data = ""
 
 		default:
 			DenyAccess(w, action, "Unknown request")
