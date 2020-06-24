@@ -19,8 +19,6 @@ type Status struct {
 func ReportStatus(app App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		remoteIP := GetIP(r)
-		infoLog.Println("Request came from", remoteIP)
-
 		if _, ok := app.AllowFrom[remoteIP]; !ok {
 			DenyAccess(w, "", "Access denied")
 			return
@@ -57,6 +55,7 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "test":
 			// performing connectivity test
+			infoLog.Println("Handling a test")
 			okay = true
 			msg = "Success"
 			data = ""
