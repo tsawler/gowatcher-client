@@ -6,14 +6,16 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"time"
 )
 
 // Status is the response sent back to goWatcher (as JSON)
 type Status struct {
-	Action string `json:"action"`
-	OK     bool   `json:"ok"`
-	Status string `json:"status"`
-	Data   string `json:"data"`
+	Action   string    `json:"action"`
+	OK       bool      `json:"ok"`
+	Status   string    `json:"status"`
+	Data     string    `json:"data"`
+	DateTime time.Time `json:"date_time"`
 }
 
 // ReportStatus performs a check based on a verb, and returns JSON response
@@ -29,11 +31,10 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		// get the action verb
 		action := chi.URLParam(r, "action")
+
 		var okay bool
 		var status Status
 		var msg, data string
-
-		infoLog.Println("Action:", action)
 
 		switch action {
 
@@ -63,7 +64,6 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "test":
 			// performing connectivity test
-			infoLog.Println("Handling a test")
 			okay = true
 			msg = "Success"
 			data = ""
@@ -78,6 +78,7 @@ func ReportStatus(app App) http.HandlerFunc {
 		status.OK = okay
 		status.Status = msg
 		status.Data = data
+		status.DateTime = time.Now()
 
 		out, _ := json.MarshalIndent(status, "", "    ")
 
@@ -125,8 +126,9 @@ func split(r rune) bool {
 // DenyAccess generates a JSON error response
 func DenyAccess(w http.ResponseWriter, action, msg string) {
 	status := Status{
-		OK:     false,
-		Status: msg,
+		OK:       false,
+		Status:   msg,
+		DateTime: time.Now(),
 	}
 
 	out, _ := json.MarshalIndent(status, "", "    ")

@@ -25,10 +25,14 @@ type App struct {
 
 func main() {
 	// TODO read these values from flags, .env, or whatever
-	inProduction = false
+	inProduction = true
 	insecurePort := ":4001"
 	allowFrom := make(map[string]int)
-	allowFrom["127.0.0.1"] = 1
+
+	// always allow from localhost
+	allowFrom["127.0.0.1"] = 1 // ipv4
+	allowFrom["::1"] = 1       // ipv6
+
 	diskToCheck = "/"
 
 	// create logs -- just writes to Stdout
