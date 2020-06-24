@@ -10,6 +10,7 @@ var KB = uint64(1024)
 // DiskThreshold is the warning threshold for disks
 const DiskThreshold = 90
 
+// checkDiskSpace peforms the disk space check
 func checkDiskSpace(disk string) (bool, string, string, error) {
 	usage := du.NewDiskUsage(disk)
 
