@@ -33,7 +33,6 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		switch action {
 		case "disk-space":
-			infoLog.Println("disk space")
 			ok, m, d, err := checkDiskSpace(diskToCheck)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
@@ -42,7 +41,6 @@ func ReportStatus(app App) http.HandlerFunc {
 			msg = m
 			data = d
 		case "memory":
-			infoLog.Println("Memory")
 			ok, m, d, err := checkMemory()
 			if err != nil {
 				DenyAccess(w, action, err.Error())

@@ -5,6 +5,7 @@ import (
 	"github.com/cloudfoundry/gosigar"
 )
 
+// checkMemory checks available memory for OS
 func checkMemory() (bool, string, string, error) {
 	okay := false
 
@@ -17,7 +18,7 @@ func checkMemory() (bool, string, string, error) {
 	}
 
 	usage := mem.Used / mem.Total
-	if usage < 80 {
+	if usage < MemoryThreshold {
 		okay = true
 	}
 
@@ -33,6 +34,7 @@ func checkMemory() (bool, string, string, error) {
 
 }
 
+// format just formats things nicely
 func format(val uint64) uint64 {
 	return val / 1024
 }

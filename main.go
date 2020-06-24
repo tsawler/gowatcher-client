@@ -11,6 +11,12 @@ var infoLog *log.Logger
 var errorLog *log.Logger
 var diskToCheck string
 
+// DiskThreshold is the warning threshold for disks
+const DiskThreshold = 90
+
+//MemoryThreshold is hte warning threshold for memory
+const MemoryThreshold = 80
+
 // App is the application config
 type App struct {
 	AllowFrom map[string]int
