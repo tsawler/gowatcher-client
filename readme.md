@@ -31,18 +31,3 @@ Example:
 ~~~
 ./gw -host=178.128.231.48 -disk='/' -production=false -port=':6001'
 ~~~
-
-Progress:
-
-- [x] Check disk space
-- [x] Check memory
-- [ ] Check SSL certificate
-- [ ] Check HTTP
-- [ ] Check HTTPS
-- [ ] Check HTTP/2
-- [ ] Check Postgresql
-- [ ] Check MySQL/MariaDB
-- [ ] Check Redis
-- [ ] Schedule tasks
-- [ ] Alert on problems
-- [ ] Graphs/reporting
