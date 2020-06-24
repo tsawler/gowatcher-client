@@ -5,7 +5,6 @@ import (
 	"github.com/go-chi/chi"
 	"net"
 	"net/http"
-	"regexp"
 	"strings"
 )
 
@@ -98,17 +97,25 @@ func GetIP(r *http.Request) string {
 	ip := net.ParseIP(testIP)
 
 	if ip.To4() != nil {
+		// this is an ipv4 address, but might have port on end. Split by :
 		forwarded := r.Header.Get("X-FORWARDED-FOR")
 		if forwarded != "" {
 			ex := strings.Split(forwarded, ":")
-			return ex[1]
+			return ex[0]
 		}
 		ex := strings.Split(r.RemoteAddr, ":")
-		return ex[1]
+		return ex[0]
 	}
 
+	// this is an ipv6 address, possibly in form of [ip]:port. Use custom delimiters
+	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	if forwarded != "" {
+		ex := strings.FieldsFunc(forwarded, split)
+		return ex[0]
+	}
 	ex := strings.FieldsFunc(testIP, split)
 	return ex[0]
+
 }
 
 func split(r rune) bool {
