@@ -43,6 +43,14 @@ func ReportStatus(app App) http.HandlerFunc {
 			data = d
 		case "memory":
 			infoLog.Println("Memory")
+			ok, m, d, err := checkMemory()
+			if err != nil {
+				DenyAccess(w, action, err.Error())
+			}
+			okay = ok
+			msg = m
+			data = d
+
 		default:
 			DenyAccess(w, action, "Unknown request")
 		}
