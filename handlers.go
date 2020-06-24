@@ -10,6 +10,7 @@ import (
 
 // Status is the response sent back to goWatcher (as JSON)
 type Status struct {
+	Action string `json:"action"`
 	OK     bool   `json:"ok"`
 	Status string `json:"status"`
 }
@@ -21,13 +22,25 @@ func ReportStatus(app App) http.HandlerFunc {
 		infoLog.Println("Request came from", remoteIP)
 
 		if _, ok := app.AllowFrom[remoteIP]; !ok {
-			denyAccess(w)
+			denyAccess(w, "", "Access denied")
 			return
 		}
 
+		okay := false
 		action := chi.URLParam(r, "action")
+
+		switch action {
+		case "disk-space":
+			infoLog.Println("disk space")
+		case "memory":
+			infoLog.Println("Memory")
+		default:
+			denyAccess(w, action, "Unknown request")
+		}
+
 		status := Status{
-			OK:     true,
+			Action: action,
+			OK:     okay,
 			Status: fmt.Sprintf("Everything's good for %s check", action),
 		}
 
@@ -50,10 +63,10 @@ func getIP(r *http.Request) string {
 	return ex[0]
 }
 
-func denyAccess(w http.ResponseWriter) {
+func denyAccess(w http.ResponseWriter, action, msg string) {
 	status := Status{
 		OK:     false,
-		Status: "Access denied",
+		Status: msg,
 	}
 
 	out, _ := json.MarshalIndent(status, "", "    ")
