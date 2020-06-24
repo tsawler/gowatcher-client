@@ -8,7 +8,7 @@ import (
 // KB is a kilobyte
 var MB = uint64(1024)
 
-// checkDiskSpace peforms the disk space check
+// checkDiskSpace performs the disk space check
 func checkDiskSpace(disk string) (bool, string, string, error) {
 	usage := du.NewDiskUsage(disk)
 
