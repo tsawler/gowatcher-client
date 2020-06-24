@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 	"os"
@@ -9,8 +10,8 @@ import (
 
 var infoLog *log.Logger
 var errorLog *log.Logger
-var diskToCheck string
-var inProduction bool
+var diskToCheck *string
+var inProduction *bool
 
 // DiskThreshold is the warning threshold for disks
 const DiskThreshold = 90
@@ -24,20 +25,28 @@ type App struct {
 }
 
 func main() {
-	// TODO read these values from flags, .env, or whatever
-	inProduction = true
-	insecurePort := ":4001"
-	allowFrom := make(map[string]int)
-
-	// always allow from localhost
-	allowFrom["127.0.0.1"] = 1 // ipv4
-	allowFrom["::1"] = 1       // ipv6
-
-	diskToCheck = "/"
 
 	// create logs -- just writes to Stdout
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	// TODO read these values from flags, .env, or whatever
+	allowFrom := make(map[string]int)
+
+	insecurePortPtr := flag.String("port", "", "Port")
+	inProduction = flag.Bool("production", false, "application is in production")
+	diskToCheck = flag.String("disk", "/", "disk to check")
+	gwHost := flag.String("host", "", "goWatcher host IP")
+
+	flag.Parse()
+
+	insecurePort := *insecurePortPtr
+	infoLog.Println("insecure port is", insecurePort)
+
+	// always allow from localhost
+	allowFrom["127.0.0.1"] = 1 // ipv4
+	allowFrom["::1"] = 1       // ipv6
+	allowFrom[*gwHost] = 1
 
 	app := App{
 		AllowFrom: allowFrom,

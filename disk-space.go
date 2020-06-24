@@ -6,13 +6,13 @@ import (
 )
 
 // KB is a kilobyte
-var KB = uint64(1024)
+var MB = uint64(1024)
 
 // checkDiskSpace peforms the disk space check
 func checkDiskSpace(disk string) (bool, string, string, error) {
 	usage := du.NewDiskUsage(disk)
 
-	msg := fmt.Sprintf("Available: %dkb; Total: %dkb, Usage: %.2f%%", usage.Available()/(KB*KB), usage.Size()/(KB*KB), usage.Usage()*100)
+	msg := fmt.Sprintf("%s: Available: %d MB; Total: %d MB, Usage: %.2f%%", disk, usage.Available()/(MB*MB), usage.Size()/(MB*MB), usage.Usage()*100)
 
 	okay := true
 
@@ -21,6 +21,6 @@ func checkDiskSpace(disk string) (bool, string, string, error) {
 		okay = false
 	}
 
-	data := fmt.Sprintf("%d|%d", usage.Available()/(KB*KB), usage.Size()/(KB*KB))
+	data := fmt.Sprintf("%d|%d", usage.Available()/(MB*MB), usage.Size()/(MB*MB))
 	return okay, msg, data, nil
 }

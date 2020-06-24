@@ -40,7 +40,7 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "disk-space":
 			// checking disk space
-			ok, m, d, err := checkDiskSpace(diskToCheck)
+			ok, m, d, err := checkDiskSpace(*diskToCheck)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -90,10 +90,11 @@ func ReportStatus(app App) http.HandlerFunc {
 // GetIP gets a requests IP address by reading off the forwarded-for
 // header (for proxies) and falls back to use the remote address.
 func GetIP(r *http.Request) string {
-	if !inProduction {
+	if !*inProduction {
+		infoLog.Println("not in prod")
 		return "127.0.0.1"
 	}
-
+	infoLog.Println("testing ip")
 	testIP := r.RemoteAddr
 	ip := net.ParseIP(testIP)
 
