@@ -13,7 +13,7 @@ env GOOS=linux GOARCH=amd64  go build -o gwc *.go
 
 Run:
 
-~~~bash
+~~~
 tcs@grendel gowatcher-client % ./gw -help
 Usage of ./gw:
   -disk string
@@ -34,15 +34,15 @@ Example:
 
 Progress:
 
--[x] Check disk space
--[x] Check memory
--[ ] Check SSL certificate
--[ ] Check HTTP
--[ ] Check HTTPS
--[ ] Check HTTP/2
--[ ] Check Postgresql
--[ ] Check MySQL/MariaDB
--[ ] Check Redis
--[ ] Schedule tasks
--[ ] Alert on problems
--[ ] Graphs/reporting
+- [x] Check disk space
+- [x] Check memory
+- [ ] Check SSL certificate
+- [ ] Check HTTP
+- [ ] Check HTTPS
+- [ ] Check HTTP/2
+- [ ] Check Postgresql
+- [ ] Check MySQL/MariaDB
+- [ ] Check Redis
+- [ ] Schedule tasks
+- [ ] Alert on problems
+- [ ] Graphs/reporting
