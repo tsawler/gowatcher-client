@@ -38,6 +38,7 @@ func ReportStatus(app App) http.HandlerFunc {
 			ok, m, d, err := checkDiskSpace(diskToCheck)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
+				return
 			}
 			okay = ok
 			msg = m
@@ -48,6 +49,7 @@ func ReportStatus(app App) http.HandlerFunc {
 			ok, m, d, err := checkMemory()
 			if err != nil {
 				DenyAccess(w, action, err.Error())
+				return
 			}
 			okay = ok
 			msg = m
@@ -61,6 +63,7 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		default:
 			DenyAccess(w, action, "Unknown request")
+			return
 		}
 
 		status.Action = action
