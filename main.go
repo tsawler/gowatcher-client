@@ -9,6 +9,7 @@ import (
 
 var infoLog *log.Logger
 var errorLog *log.Logger
+var diskToCheck string
 
 type App struct {
 	AllowFrom map[string]int
@@ -19,6 +20,7 @@ func main() {
 	insecurePort := ":4001"
 	allowFrom := make(map[string]int)
 	allowFrom["127.0.0.1"] = 1
+	diskToCheck = "/"
 
 	// create logs -- just writes to Stdout
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)

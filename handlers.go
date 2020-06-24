@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/go-chi/chi"
 	"net/http"
 	"strings"
@@ -13,6 +12,7 @@ type Status struct {
 	Action string `json:"action"`
 	OK     bool   `json:"ok"`
 	Status string `json:"status"`
+	Data   string `json:"data"`
 }
 
 // Home shows the home (login) screen
@@ -26,23 +26,31 @@ func ReportStatus(app App) http.HandlerFunc {
 			return
 		}
 
-		okay := false
 		action := chi.URLParam(r, "action")
+		var okay bool
+		var status Status
+		var msg, data string
 
 		switch action {
 		case "disk-space":
 			infoLog.Println("disk space")
+			ok, m, d, err := checkDiskSpace(diskToCheck)
+			if err != nil {
+				denyAccess(w, action, err.Error())
+			}
+			okay = ok
+			msg = m
+			data = d
 		case "memory":
 			infoLog.Println("Memory")
 		default:
 			denyAccess(w, action, "Unknown request")
 		}
 
-		status := Status{
-			Action: action,
-			OK:     okay,
-			Status: fmt.Sprintf("Everything's good for %s check", action),
-		}
+		status.Action = action
+		status.OK = okay
+		status.Status = msg
+		status.Data = data
 
 		out, _ := json.MarshalIndent(status, "", "    ")
 
