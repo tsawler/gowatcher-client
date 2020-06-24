@@ -10,6 +10,7 @@ import (
 var infoLog *log.Logger
 var errorLog *log.Logger
 var diskToCheck string
+var inProduction bool
 
 // DiskThreshold is the warning threshold for disks
 const DiskThreshold = 90
@@ -24,6 +25,7 @@ type App struct {
 
 func main() {
 	// TODO read these values from flags, .env, or whatever
+	inProduction = false
 	insecurePort := ":4001"
 	allowFrom := make(map[string]int)
 	allowFrom["127.0.0.1"] = 1
