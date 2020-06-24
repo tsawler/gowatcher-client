@@ -11,6 +11,7 @@ var infoLog *log.Logger
 var errorLog *log.Logger
 var diskToCheck string
 
+// App is the application config
 type App struct {
 	AllowFrom map[string]int
 }
