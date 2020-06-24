@@ -15,7 +15,7 @@ type Status struct {
 	Data   string `json:"data"`
 }
 
-// ReportStatus perfroms a check based on a verb, and returns JSON response
+// ReportStatus performs a check based on a verb, and returns JSON response
 func ReportStatus(app App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		remoteIP := GetIP(r)
