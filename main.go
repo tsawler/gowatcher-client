@@ -42,6 +42,7 @@ func main() {
 
 	insecurePort := *insecurePortPtr
 	infoLog.Println("insecure port is", insecurePort)
+	infoLog.Println("disk is", *diskToCheck)
 
 	// always allow from localhost
 	allowFrom["127.0.0.1"] = 1 // ipv4
