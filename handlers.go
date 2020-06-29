@@ -19,6 +19,7 @@ type Status struct {
 	DateTime time.Time `json:"date_time"`
 }
 
+// JsonRequest is the json format sent to us by goWatcher
 type JsonRequest struct {
 	Parameters string `json:"parameters"`
 }

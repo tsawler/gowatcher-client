@@ -5,7 +5,7 @@ import (
 	"github.com/ricochet2200/go-disk-usage/du"
 )
 
-// KB is a kilobyte
+// MB is a kilobyte
 var MB = uint64(1024)
 
 // checkDiskSpace performs the disk space check
