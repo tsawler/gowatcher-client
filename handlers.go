@@ -112,12 +112,12 @@ func ReportStatus(app App) http.HandlerFunc {
 // header (for proxies) and falls back to use the remote address.
 func GetIP(r *http.Request) string {
 	if !*inProduction {
-		infoLog.Println("not in prod")
 		return "127.0.0.1"
 	}
-	infoLog.Println("testing ip")
+
 	testIP := r.RemoteAddr
 	ip := net.ParseIP(testIP)
+	infoLog.Println("IP is", testIP)
 
 	if ip.To4() != nil {
 		// this is an ipv4 address, but might have port on end. Split by :
