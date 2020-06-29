@@ -83,6 +83,18 @@ func ReportStatus(app App) http.HandlerFunc {
 			data = d
 			break
 
+		case "postgres":
+			infoLog.Println("postgres")
+			ok, m, d, err := checkPostgres(j.Parameters)
+			if err != nil {
+				DenyAccess(w, action, err.Error())
+				return
+			}
+			okay = ok
+			msg = m
+			data = d
+			break
+
 		case "test":
 			// performing connectivity test
 			okay = true
