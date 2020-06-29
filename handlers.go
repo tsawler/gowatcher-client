@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/go-chi/chi"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"strings"
@@ -18,6 +19,10 @@ type Status struct {
 	DateTime time.Time `json:"date_time"`
 }
 
+type JsonRequest struct {
+	Parameters string `json:"parameters"`
+}
+
 // ReportStatus performs a check based on a verb, and returns JSON response
 func ReportStatus(app App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +30,22 @@ func ReportStatus(app App) http.HandlerFunc {
 		remoteIP := GetIP(r)
 		infoLog.Println("IP address is", remoteIP)
 		if _, ok := app.AllowFrom[remoteIP]; !ok {
+			infoLog.Println("Denying access")
 			DenyAccess(w, "", "Access denied")
+			return
+		}
+
+		// parse json
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			DenyAccess(w, "", "Error reading request body")
+			return
+		}
+
+		var j JsonRequest
+		err = json.Unmarshal(body, &j)
+		if err != nil {
+			DenyAccess(w, "", "Error parsing json")
 			return
 		}
 
@@ -40,7 +60,7 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "disk-space":
 			// checking disk space
-			ok, m, d, err := checkDiskSpace(*diskToCheck)
+			ok, m, d, err := checkDiskSpace(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -52,6 +72,7 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "memory":
 			// checking memory
+			infoLog.Println("Memory")
 			ok, m, d, err := checkMemory()
 			if err != nil {
 				DenyAccess(w, action, err.Error())
@@ -117,7 +138,6 @@ func GetIP(r *http.Request) string {
 	}
 	ex := strings.FieldsFunc(testIP, split)
 	return ex[0]
-
 }
 
 func split(r rune) bool {

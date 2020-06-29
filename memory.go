@@ -22,6 +22,8 @@ func checkMemory() (bool, string, string, error) {
 		okay = true
 	}
 
+	infoLog.Println("Checking memory and returning", okay, mem.Free)
+
 	return okay,
 		fmt.Sprintf("Total: %d; Used: %d; Free: %d",
 			format(mem.Total),

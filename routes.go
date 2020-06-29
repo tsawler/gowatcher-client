@@ -11,6 +11,7 @@ func routes(app App) http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Get("/{action}", ReportStatus(app))
+	mux.Post("/{action}", ReportStatus(app))
 
 	return mux
 }

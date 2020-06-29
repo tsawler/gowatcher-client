@@ -10,7 +10,6 @@ import (
 
 var infoLog *log.Logger
 var errorLog *log.Logger
-var diskToCheck *string
 var inProduction *bool
 
 // DiskThreshold is the warning threshold for disks
@@ -35,14 +34,12 @@ func main() {
 
 	insecurePortPtr := flag.String("port", "", "Port")
 	inProduction = flag.Bool("production", false, "application is in production")
-	diskToCheck = flag.String("disk", "/", "disk to check")
 	gwHost := flag.String("host", "", "goWatcher host IP")
 
 	flag.Parse()
 
 	insecurePort := *insecurePortPtr
 	infoLog.Println("insecure port is", insecurePort)
-	infoLog.Println("disk is", *diskToCheck)
 
 	// always allow from localhost
 	allowFrom["127.0.0.1"] = 1 // ipv4
