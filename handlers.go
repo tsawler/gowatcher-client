@@ -23,7 +23,7 @@ type JsonRequest struct {
 	Parameters string `json:"parameters"`
 }
 
-// ReportStatus performs a check based on a verb, and returns JSON response
+// ReportStatus performs a check, and returns JSON response
 func ReportStatus(app App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// ensure request comes from valid ip address
@@ -72,7 +72,6 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "memory":
 			// checking memory
-			infoLog.Println("Memory")
 			ok, m, d, err := checkMemory()
 			if err != nil {
 				DenyAccess(w, action, err.Error())
@@ -84,7 +83,6 @@ func ReportStatus(app App) http.HandlerFunc {
 			break
 
 		case "postgres":
-			infoLog.Println("postgres")
 			ok, m, d, err := checkPostgres(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
@@ -168,11 +166,4 @@ func DenyAccess(w http.ResponseWriter, action, msg string) {
 
 	w.Header().Set("Content-Type", "application/json")
 	_, _ = w.Write(out)
-}
-
-func isIPV4(ip string) bool {
-	if strings.Contains(ip, ".") {
-		return true
-	}
-	return false
 }
