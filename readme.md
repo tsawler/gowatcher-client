@@ -16,8 +16,6 @@ Run:
 ~~~
 tcs@grendel gowatcher-client % ./gw -help
 Usage of ./gw:
-  -disk string
-        disk to check (default "/")
   -host string
         goWatcher host IP
   -port string
@@ -29,5 +27,5 @@ Usage of ./gw:
 Example:
 
 ~~~
-./gw -host=178.128.231.48 -disk='/' -production=false -port=':6001'
+./gw -host=178.128.231.48 -production=false -port=':6001'
 ~~~
