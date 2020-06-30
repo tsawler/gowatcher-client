@@ -107,6 +107,18 @@ func ReportStatus(app App) http.HandlerFunc {
 			data = d
 			break
 
+		case "redis":
+			// checking redis status
+			ok, m, d, err := checkRedis(j.Parameters)
+			if err != nil {
+				DenyAccess(w, action, err.Error())
+				return
+			}
+			okay = ok
+			msg = m
+			data = d
+			break
+
 		case "test":
 			// performing connectivity test
 			okay = true
