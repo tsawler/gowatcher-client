@@ -39,6 +39,7 @@ func ReportStatus(app App) http.HandlerFunc {
 		// parse json
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
+			errorLog.Println(err)
 			DenyAccess(w, "", "Error reading request body")
 			return
 		}
@@ -46,6 +47,7 @@ func ReportStatus(app App) http.HandlerFunc {
 		var j JsonRequest
 		err = json.Unmarshal(body, &j)
 		if err != nil {
+			errorLog.Println(err)
 			DenyAccess(w, "", "Error parsing json")
 			return
 		}
@@ -85,6 +87,17 @@ func ReportStatus(app App) http.HandlerFunc {
 
 		case "postgres":
 			ok, m, d, err := checkPostgres(j.Parameters)
+			if err != nil {
+				DenyAccess(w, action, err.Error())
+				return
+			}
+			okay = ok
+			msg = m
+			data = d
+			break
+
+		case "mariadb":
+			ok, m, d, err := checkMariaDB(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
