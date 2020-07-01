@@ -15,6 +15,8 @@ var inProduction *bool
 // DiskThreshold is the warning threshold for disks
 const DiskThreshold = 90
 
+const gwcVersion = "1.0.0"
+
 //MemoryThreshold is hte warning threshold for memory
 const MemoryThreshold = 80
 
@@ -61,7 +63,7 @@ func main() {
 		WriteTimeout:      5 * time.Second,
 	}
 
-	infoLog.Printf("Starting HTTP server on port %s....", insecurePort)
+	infoLog.Printf("Starting GoWatcher client v%s on port %s....", gwcVersion, insecurePort)
 
 	err := srv.ListenAndServe()
 	if err != nil {
