@@ -14,7 +14,7 @@ env GOOS=linux GOARCH=amd64  go build -o gwc *.go
 Run:
 
 ~~~
-tcs@grendel gowatcher-client % ./gw -help
+tcs@grendel gowatcher-client % ./gwc -help
 Usage of ./gw:
   -host string
         goWatcher host IP
