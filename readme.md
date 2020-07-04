@@ -27,5 +27,5 @@ Usage of ./gw:
 Example:
 
 ~~~
-./gw -host=178.128.231.48 -production=false -port=':6001'
+./gwc -host=178.128.231.48 -production=false -port=':6001'
 ~~~
