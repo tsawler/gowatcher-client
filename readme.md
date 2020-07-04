@@ -15,7 +15,7 @@ Run:
 
 ~~~
 tcs@grendel gowatcher-client % ./gwc -help
-Usage of ./gw:
+Usage of ./gwc:
   -host string
         goWatcher host IP
   -port string
