@@ -6,20 +6,24 @@ import (
 )
 
 // checkMemory checks available memory for OS
-func checkMemory() (bool, string, string, error) {
+func checkMemory() (bool, string, string, int, error) {
 	okay := false
 
 	mem := sigar.Mem{}
-
+	newStatusID := 0
 	err := mem.Get()
 
 	if err != nil {
-		return false, err.Error(), "", err
+		return false, err.Error(), "", 2, err
 	}
 
 	usage := mem.Used / mem.Total
 	if usage < MemoryThreshold {
 		okay = true
+		newStatusID = 1
+	} else if usage < MemoryWarningThreshold {
+		okay = true
+		newStatusID = 4
 	}
 
 	return okay,
@@ -30,7 +34,7 @@ func checkMemory() (bool, string, string, error) {
 		fmt.Sprintf("%d|%d|%d",
 			format(mem.Total),
 			format(mem.Used),
-			format(mem.Free)), nil
+			format(mem.Free)), newStatusID, nil
 
 }
 

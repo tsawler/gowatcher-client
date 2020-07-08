@@ -4,13 +4,13 @@ import (
 	"github.com/mediocregopher/radix/v3"
 )
 
-func checkRedis(dsn string) (bool, string, string, error) {
+func checkRedis(dsn string) (bool, string, string, int, error) {
 
 	pool, err := radix.NewPool("tcp", dsn, 1)
 	if err != nil {
-		return false, "Error connecting to redis", "", err
+		return false, "Error connecting to redis", "", 2, err
 	}
 	_ = pool.Close()
 
-	return true, "Pinged redis successfully!", "", nil
+	return true, "Pinged redis successfully!", "", 1, nil
 }

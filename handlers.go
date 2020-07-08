@@ -12,11 +12,12 @@ import (
 
 // Status is the response sent back to goWatcher (as JSON)
 type Status struct {
-	Action   string    `json:"action"`
-	OK       bool      `json:"ok"`
-	Status   string    `json:"status"`
-	Data     string    `json:"data"`
-	DateTime time.Time `json:"date_time"`
+	Action      string    `json:"action"`
+	OK          bool      `json:"ok"`
+	Status      string    `json:"status"`
+	Data        string    `json:"data"`
+	DateTime    time.Time `json:"date_time"`
+	NewStatusID int       `json:"new_status_id"`
 }
 
 // JsonRequest is the json format sent to us by goWatcher
@@ -58,12 +59,13 @@ func ReportStatus(app App) http.HandlerFunc {
 		var okay bool
 		var status Status
 		var msg, data string
+		var newStatusID int
 
 		switch action {
 
 		case "disk-space":
 			// checking disk space
-			ok, m, d, err := checkDiskSpace(j.Parameters)
+			ok, m, d, statusID, err := checkDiskSpace(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -71,11 +73,12 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+			newStatusID = statusID
 			break
 
 		case "memory":
 			// checking memory
-			ok, m, d, err := checkMemory()
+			ok, m, d, statusID, err := checkMemory()
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -83,10 +86,11 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+			newStatusID = statusID
 			break
 
 		case "postgres":
-			ok, m, d, err := checkPostgres(j.Parameters)
+			ok, m, d, statusID, err := checkPostgres(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -94,10 +98,11 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+			newStatusID = statusID
 			break
 
 		case "mariadb":
-			ok, m, d, err := checkMariaDB(j.Parameters)
+			ok, m, d, statusID, err := checkMariaDB(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -105,11 +110,12 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+			newStatusID = statusID
 			break
 
 		case "redis":
 			// checking redis status
-			ok, m, d, err := checkRedis(j.Parameters)
+			ok, m, d, statusID, err := checkRedis(j.Parameters)
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
@@ -117,6 +123,7 @@ func ReportStatus(app App) http.HandlerFunc {
 			okay = ok
 			msg = m
 			data = d
+			newStatusID = statusID
 			break
 
 		case "test":
@@ -136,6 +143,7 @@ func ReportStatus(app App) http.HandlerFunc {
 		status.Status = msg
 		status.Data = data
 		status.DateTime = time.Now()
+		status.NewStatusID = newStatusID
 
 		out, _ := json.MarshalIndent(status, "", "    ")
 
