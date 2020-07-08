@@ -14,8 +14,8 @@ env GOOS=linux GOARCH=amd64  go build -o gwc *.go
 Run:
 
 ~~~
-tcs@grendel gowatcher-client % ./gw -help
-Usage of ./gw:
+tcs@grendel gowatcher-client % ./gwc -help
+Usage of ./gwc:
   -host string
         goWatcher host IP
   -port string
@@ -27,5 +27,5 @@ Usage of ./gw:
 Example:
 
 ~~~
-./gw -host=178.128.231.48 -production=false -port=':6001'
+./gwc -host=178.128.231.48 -production=false -port=':6001'
 ~~~
