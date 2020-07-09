@@ -10,6 +10,17 @@ import (
 	"time"
 )
 
+const (
+	// StatusHealthy is healthy status
+	StatusHealthy = 1
+	// StatusProblem is problem status
+	StatusProblem = 2
+	// StatusHPending is pending status
+	StatusPending = 3
+	// StatusWarning is warning status
+	StatusWarning = 4
+)
+
 // Status is the response sent back to goWatcher (as JSON)
 type Status struct {
 	Action      string    `json:"action"`
@@ -116,6 +127,18 @@ func ReportStatus(app App) http.HandlerFunc {
 		case "redis":
 			// checking redis status
 			ok, m, d, statusID, err := checkRedis(j.Parameters)
+			if err != nil {
+				DenyAccess(w, action, err.Error())
+				return
+			}
+			okay = ok
+			msg = m
+			data = d
+			newStatusID = statusID
+			break
+
+		case "cpu":
+			ok, m, d, statusID, err := checkCPU()
 			if err != nil {
 				DenyAccess(w, action, err.Error())
 				return
