@@ -10,7 +10,10 @@ const CPUThreshold = 85.0
 
 func checkCPU() (bool, string, string, int, error) {
 
-	c, _ := cpu.Percent(0, false)
+	c, err := cpu.Percent(0, false)
+	if err != nil {
+		return false, fmt.Sprintf("Error checking CPU: %s", err.Error()), "", StatusProblem, err
+	}
 
 	okay := true
 	newStatusID := StatusHealthy
