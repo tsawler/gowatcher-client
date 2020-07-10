@@ -5,7 +5,13 @@ import (
 	"github.com/ricochet2200/go-disk-usage/du"
 )
 
-// MB is a kilobyte
+// DiskThreshold is the threshold for disk space
+const DiskThreshold = 90
+
+// DiskWarningThreshold is the warning threshold for disk space
+const DiskWarningThreshold = 75
+
+// MB is a megabyte
 var MB = uint64(1024)
 
 // checkDiskSpace performs the disk space check

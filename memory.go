@@ -5,6 +5,12 @@ import (
 	"github.com/cloudfoundry/gosigar"
 )
 
+//MemoryThreshold is the threshold for memory problems
+const MemoryThreshold = 80
+
+//MemoryWarningThreshold is the warning threshold for memory
+const MemoryWarningThreshold = 60
+
 // checkMemory checks available memory for OS
 func checkMemory() (bool, string, string, int, error) {
 	okay := false

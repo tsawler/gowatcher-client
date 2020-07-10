@@ -12,15 +12,7 @@ var infoLog *log.Logger
 var errorLog *log.Logger
 var inProduction *bool
 
-// DiskThreshold is the warning threshold for disks
-const DiskThreshold = 90
-const DiskWarningThreshold = 75
-
 const gwcVersion = "1.0.0"
-
-//MemoryThreshold is hte warning threshold for memory
-const MemoryThreshold = 80
-const MemoryWarningThreshold = 60
 
 // App is the application config
 type App struct {
