@@ -6,7 +6,10 @@ import (
 	"github.com/shirou/gopsutil/load"
 )
 
+// LoadWarningThreshold is the warning threshold
 const LoadWarningThreshold = 1.5
+
+// LoadThreshold is the problem threshold
 const LoadThreshold = 2.0
 
 func checkLoad() (bool, string, string, int, error) {
