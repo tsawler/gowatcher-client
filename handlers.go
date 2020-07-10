@@ -148,6 +148,18 @@ func ReportStatus(app App) http.HandlerFunc {
 			newStatusID = statusID
 			break
 
+		case "load":
+			ok, m, d, statusID, err := checkLoad()
+			if err != nil {
+				DenyAccess(w, action, err.Error())
+				return
+			}
+			okay = ok
+			msg = m
+			data = d
+			newStatusID = statusID
+			break
+
 		case "test":
 			// performing connectivity test
 			okay = true
