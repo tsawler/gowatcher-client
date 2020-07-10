@@ -15,17 +15,23 @@ func checkCPU() (bool, string, string, int, error) {
 		return false, fmt.Sprintf("Error checking CPU: %s", err.Error()), "", StatusProblem, err
 	}
 
+	numCPU, err := cpu.Counts(true)
+	if err != nil {
+		return false, fmt.Sprintf("Error checking CPU: %s", err.Error()), "", StatusProblem, err
+	}
+
 	okay := true
 	newStatusID := StatusHealthy
-	msg := fmt.Sprintf("CPU usage okay: %0.4f%%", c[0])
+
+	msg := fmt.Sprintf("CPU usage okay: %0.4f%% average usage for %d cpu(s)", c[0], numCPU)
 
 	if c[0] > CPUWarningThreshold {
 		newStatusID = StatusWarning
-		msg = fmt.Sprintf("Warning: Moderate CPU usage: %0.4f%%", c[0])
+		msg = fmt.Sprintf("Warning: Moderate CPU usage: %0.4f%% for %d cpu(s)", c[0], numCPU)
 		okay = false
 	} else if c[0] > CPUThreshold {
 		okay = false
-		msg = fmt.Sprintf("Problem: High CPU usage %0.4f%%", c[0])
+		msg = fmt.Sprintf("Problem: High CPU usage %0.4f%% for %d cpu(s)", c[0], numCPU)
 		newStatusID = StatusProblem
 	}
 

@@ -41,7 +41,6 @@ func ReportStatus(app App) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// ensure request comes from valid ip address
 		remoteIP := GetIP(r)
-		infoLog.Println("IP address is", remoteIP)
 		if _, ok := app.AllowFrom[remoteIP]; !ok {
 			infoLog.Println("Denying access")
 			DenyAccess(w, "", "Access denied")
