@@ -9,12 +9,13 @@ const CPUWarningThreshold = 50.0
 const CPUThreshold = 85.0
 
 func checkCPU() (bool, string, string, int, error) {
-
+	// get the average cpu usage across all cpus
 	c, err := cpu.Percent(0, false)
 	if err != nil {
 		return false, fmt.Sprintf("Error checking CPU: %s", err.Error()), "", StatusProblem, err
 	}
 
+	// count the number of cpus
 	numCPU, err := cpu.Counts(true)
 	if err != nil {
 		return false, fmt.Sprintf("Error checking CPU: %s", err.Error()), "", StatusProblem, err
@@ -25,6 +26,7 @@ func checkCPU() (bool, string, string, int, error) {
 
 	msg := fmt.Sprintf("CPU usage okay: %0.4f%% average usage for %d cpu(s)", c[0], numCPU)
 
+	// check if there is a warning/problem
 	if c[0] > CPUWarningThreshold {
 		newStatusID = StatusWarning
 		msg = fmt.Sprintf("Warning: Moderate CPU usage: %0.4f%% for %d cpu(s)", c[0], numCPU)
