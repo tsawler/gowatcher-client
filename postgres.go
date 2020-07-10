@@ -14,6 +14,7 @@ func checkPostgres(dsn string) (bool, string, string, int, error) {
 	if err != nil {
 		return false, "Cannot connect to database!", "", 2, err
 	}
+	defer d.Close()
 
 	err = d.Ping()
 	if err != nil {

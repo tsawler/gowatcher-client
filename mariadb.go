@@ -11,6 +11,7 @@ func checkMariaDB(dsn string) (bool, string, string, int, error) {
 		errorLog.Println(err)
 		return false, "Cannot connect to database!", "", 2, err
 	}
+	defer d.Close()
 
 	err = d.Ping()
 	if err != nil {

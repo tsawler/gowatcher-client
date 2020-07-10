@@ -10,7 +10,7 @@ func checkRedis(dsn string) (bool, string, string, int, error) {
 	if err != nil {
 		return false, "Error connecting to redis", "", 2, err
 	}
-	_ = pool.Close()
+	defer pool.Close()
 
 	return true, "Pinged redis successfully!", "", 1, nil
 }
