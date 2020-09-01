@@ -5,8 +5,8 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 )
 
-const CPUWarningThreshold = 50.0
-const CPUThreshold = 85.0
+const CPUWarningThreshold = 77.0
+const CPUThreshold = 90.0
 
 func checkCPU() (bool, string, string, int, error) {
 	// get the average cpu usage across all cpus
